@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Future Lab Automation</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#050b16;color:#edf8ff;font-family:Arial,sans-serif}
+main{max-width:850px;margin:30px auto;padding:20px}.hero{padding:28px;border:1px solid #124c69;border-radius:20px;background:linear-gradient(135deg,#07162a,#10103a)}
+h1{margin:0;color:#65e6ff;font-size:clamp(28px,6vw,48px)}p{color:#b6c9d8;line-height:1.6}
+.panel{margin-top:18px;padding:22px;border:1px solid #1b3b55;border-radius:16px;background:#0a1423}
+button{background:#00bfe8;color:#00121d;border:0;padding:14px 22px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#02060c;padding:15px;border-radius:10px;color:#8cecff;min-height:100px}
+.small{font-size:13px;color:#91a9bc}
+</style></head>
+<body><main>
+<section class="hero"><h1>AI FUTURE LAB</h1><p>Cloud YouTube Shorts Automation<br>Understand AI. Use AI. Stay Ahead.</p></section>
+<section class="panel"><h2>Automation control</h2><p>Generate an original English AI Short, create a vertical video and upload it to your connected YouTube channel.</p>
+<button id="run">Run automation now</button> <button id="refresh" style="background:#263e55;color:#eaf8ff">Refresh status</button>
+<p class="small">Keep this dashboard private. Do not host it publicly without adding authentication.</p></section>
+<section class="panel"><h3>Run status / logs</h3><pre id="log">Loading...</pre></section>
+</main>
+<script>
+const log=document.getElementById('log'),run=document.getElementById('run');
+async function status(){try{const r=await fetch('/api/status');const d=await r.json();log.textContent=(d.running?'RUNNING\n':'IDLE\n')+d.log;run.disabled=d.running}catch(e){log.textContent='Cannot reach server: '+e.message}}
+run.onclick=async()=>{run.disabled=true;try{const r=await fetch('/api/run',{method:'POST'});const d=await r.json();if(!r.ok)throw new Error(d.error||'Request failed');log.textContent=d.message;setTimeout(status,1500)}catch(e){log.textContent=e.message;run.disabled=false}};
+document.getElementById('refresh').onclick=status;status();setInterval(status,5000);
+</script></body></html>

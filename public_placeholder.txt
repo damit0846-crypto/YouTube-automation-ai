@@ -1,0 +1,1 @@
+The dashboard is served from public/index.html (created below).
